@@ -9,6 +9,10 @@ app.get('/_ah/ready', (req, res) => {
 app.get('/_ah/live', (req, res) => {
     res.sendStatus(200);
 });
+
+app.get('/', (req, res) => {
+    res.send('Hello World! Service version:00 Current time: ' + new Date().toISOString());
+});
 app.post('/pubsub', express.json(), (req, res) => {
     const message = req.body.message;
 
