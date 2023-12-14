@@ -11,10 +11,11 @@ app.get('/_ah/live', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Hello World! Service version:00 Current time: ' + new Date().toISOString());
+    res.send('Hello World! Service version:01 Current time: ' + new Date().toISOString());
 });
 app.post('/pubsub', express.json(), (req, res) => {
     const message = req.body.message;
+    console.log(`Received message ${message.data}`);
 
     // Process the message here
 
