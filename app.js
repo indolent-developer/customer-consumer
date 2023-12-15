@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 app.post('/pubsub', express.json(), (req, res) => {
     const message = req.body.message;
-    console.log(`Received message ${message.data}`);
+    process.stdout.write(`Received message ${message.data}`)
 
     // Process the message here
 
@@ -25,5 +25,5 @@ app.post('/pubsub', express.json(), (req, res) => {
 const PORT = 3000;
 
 app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`);
+    process.stdout.write(`Server listening on port ${PORT}`)
 });
