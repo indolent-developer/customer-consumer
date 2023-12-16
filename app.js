@@ -1,17 +1,4 @@
 const express = require('express');
-const { Logging } = require('@google-cloud/logging');
-
-
-const logging = new Logging({
-    projectId: 'pub-sub-poc-408117',
-});
-
-const log = logging.log('customer-consumer-log');
-const metadata = {
-    resource: {
-        type: 'global',
-    },
-};
 
 const app = express();
 
@@ -31,7 +18,7 @@ app.get('/', (req, res) => {
 });
 app.post('/pubsub', express.json(), (req, res) => {
     const message = req.body.message;
-    console.log(`Message received: ${message}`);
+    log(`Received message ${message.data} with attributes ${JSON.stringify(message.attributes)}.`);
 
     // Process the message here
 
@@ -41,5 +28,16 @@ app.post('/pubsub', express.json(), (req, res) => {
 
 
 app.listen(PORT, () => {
-    log.write(log.entry(metadata, `Server listening on port ${PORT}`));
+    log(`Server listening on port ${PORT}...`);
 });
+
+function log(message) {
+    const logEntry = {
+        timestamp: new Date().toISOString(),
+        component: "app.js",
+        severity: "INFO",
+        message: message
+    }
+
+    console.log(JSON.stringify(logEntry));
+}
