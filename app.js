@@ -1,4 +1,18 @@
 const express = require('express');
+const { Logging } = require('@google-cloud/logging');
+
+
+const logging = new Logging({
+    projectId: 'pub-sub-poc-408117',
+});
+
+const log = logging.log('customer-consumer-log');
+const metadata = {
+    resource: {
+        type: 'global',
+    },
+};
+
 const app = express();
 
 const PORT = 3000;
@@ -17,7 +31,7 @@ app.get('/', (req, res) => {
 });
 app.post('/pubsub', express.json(), (req, res) => {
     const message = req.body.message;
-    process.stdout.write(`Received message ${message.data}`)
+    console.log(`Message received: ${message}`);
 
     // Process the message here
 
@@ -27,5 +41,5 @@ app.post('/pubsub', express.json(), (req, res) => {
 
 
 app.listen(PORT, () => {
-    process.stdout.write(`Server listening on port ${PORT}`)
+    log.write(log.entry(metadata, `Server listening on port ${PORT}`));
 });
